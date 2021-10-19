@@ -1,4 +1,4 @@
-package io.mustelidae.smallclawedotter.domain.common
+package io.mustelidae.smallclawedotter.api.common
 
 import org.hibernate.envers.Audited
 import org.springframework.data.annotation.CreatedBy
@@ -23,10 +23,10 @@ class Audit {
 
     @CreatedDate
     var createdAt: LocalDateTime? = null
-        private set
+        protected set
 
     @Audited
     @LastModifiedDate
     var modifiedAt: LocalDateTime? = null
-        private set
+        protected set
 }

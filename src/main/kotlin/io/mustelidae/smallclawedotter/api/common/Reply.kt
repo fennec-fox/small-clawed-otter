@@ -1,4 +1,4 @@
-package io.mustelidae.smallclawedotter.domain.common
+package io.mustelidae.smallclawedotter.api.common
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped
 import javax.xml.bind.annotation.XmlAnyElement

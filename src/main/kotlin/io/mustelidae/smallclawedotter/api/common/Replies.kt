@@ -1,4 +1,4 @@
-package io.mustelidae.smallclawedotter.domain.common
+package io.mustelidae.smallclawedotter.api.common
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonRootName

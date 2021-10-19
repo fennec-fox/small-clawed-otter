@@ -1,12 +1,15 @@
-package io.mustelidae.smallclawedotter.domain.board
+package io.mustelidae.smallclawedotter.api.domain.board
 
+import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
@@ -26,37 +29,44 @@ class Document(
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "paragraph_id")
     var paragraph: Paragraph? = null
+        protected set
 
     @OneToMany(mappedBy = "document", cascade = [CascadeType.ALL])
     var attachments: MutableList<Attachment> = arrayListOf()
+        protected set
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "topic_id")
+    var topic: Topic? = null
+        protected set
 
     @Id
     @GeneratedValue
     var id: Long? = null
-        private set
+        protected set
 
     var expired = false
-        private set
+        protected set
 
     var effectiveDate: LocalDateTime? = null
-        private set
+        protected set
     var expirationDate: LocalDateTime? = null
-        private set
+        protected set
 
     var hidden = false
-        private set
+        protected set
     var showDateTime: LocalDateTime? = null
-        private set
+        protected set
 
     fun setBy(paragraph: Paragraph) {
         this.paragraph = paragraph
-        if(paragraph.document != this)
+        if (paragraph.document != this)
             paragraph.setBy(this)
     }
 
     fun addBy(attachment: Attachment) {
         attachments.add(attachment)
-        if(attachment.document != this)
+        if (attachment.document != this)
             attachment.setBy(this)
     }
 
@@ -76,7 +86,7 @@ class Document(
     }
 
     fun isHidden(): Boolean {
-        if(hidden.not())
+        if (hidden.not())
             return false
 
         return showDateTime!!.isAfter(LocalDateTime.now())
@@ -86,5 +96,11 @@ class Document(
         this.expired = true
     }
 
+    fun setBy(topic: Topic) {
+        this.topic = topic
+        if (topic.documents.contains(this).not())
+            topic.addBy(this)
+    }
 
+    companion object
 }
