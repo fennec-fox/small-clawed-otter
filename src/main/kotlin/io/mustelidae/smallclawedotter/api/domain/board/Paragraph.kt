@@ -1,10 +1,7 @@
-package io.mustelidae.smallclawedotter.domain.board
+package io.mustelidae.smallclawedotter.api.domain.board
 
-
-import javax.persistence.Basic
 import javax.persistence.Column
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 import javax.persistence.Lob
@@ -24,9 +21,10 @@ class Paragraph(
     @Id
     @GeneratedValue
     var id: Long? = null
-        private set
+        protected set
     @OneToOne(mappedBy = "paragraph")
     var document: Document? = null
+        protected set
 
     enum class Type {
         JSON,
@@ -36,7 +34,7 @@ class Paragraph(
 
     fun setBy(document: Document) {
         this.document = document
-        if(document.paragraph != this)
+        if (document.paragraph != this)
             document.setBy(this)
     }
 }

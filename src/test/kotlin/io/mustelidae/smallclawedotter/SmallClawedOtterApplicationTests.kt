@@ -9,5 +9,4 @@ class SmallClawedOtterApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

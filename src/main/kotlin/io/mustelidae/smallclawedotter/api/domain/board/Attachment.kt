@@ -1,4 +1,4 @@
-package io.mustelidae.smallclawedotter.domain.board
+package io.mustelidae.smallclawedotter.api.domain.board
 
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -28,7 +28,7 @@ class Attachment(
     @Id
     @GeneratedValue
     var id: Long? = null
-        private set
+        protected set
 
     @Column(length = 1500)
     var thumbnail: String? = null
@@ -43,11 +43,11 @@ class Attachment(
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
     var document: Document? = null
-        private set
+        protected set
 
     fun setBy(document: Document) {
         this.document = document
-        if(document.attachments.contains(this).not())
+        if (document.attachments.contains(this).not())
             document.addBy(this)
     }
 
