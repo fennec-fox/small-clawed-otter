@@ -15,12 +15,12 @@ import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
 /**
- * 공지사항용으로 사용할 글
+ * 공지사항용으로 사용할 문서
  * - paragraph에는 lob 형태의 column이 있어서 별도 테이블로 분리한다.
  * @ref https://dev.mysql.com/doc/refman/8.0/en/blob.html
  */
 @Entity
-class Writing(
+class Document(
     @Column(length = 1000)
     var title: String,
     @Column(length = 2000)
@@ -32,7 +32,7 @@ class Writing(
     var paragraph: Paragraph? = null
         protected set
 
-    @OneToMany(mappedBy = "writing", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "document", cascade = [CascadeType.ALL])
     var attachments: MutableList<Attachment> = arrayListOf()
         protected set
 
@@ -61,13 +61,13 @@ class Writing(
 
     fun setBy(paragraph: Paragraph) {
         this.paragraph = paragraph
-        if (paragraph.writing != this)
+        if (paragraph.document != this)
             paragraph.setBy(this)
     }
 
     fun addBy(attachment: Attachment) {
         attachments.add(attachment)
-        if (attachment.writing != this)
+        if (attachment.document != this)
             attachment.setBy(this)
     }
 
@@ -103,7 +103,7 @@ class Writing(
 
     fun setBy(topic: Topic) {
         this.topic = topic
-        if (topic.writings.contains(this).not())
+        if (topic.documents.contains(this).not())
             topic.addBy(this)
     }
 

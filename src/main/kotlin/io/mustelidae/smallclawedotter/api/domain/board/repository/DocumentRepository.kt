@@ -1,8 +1,8 @@
 package io.mustelidae.smallclawedotter.api.domain.board.repository
 
-import io.mustelidae.smallclawedotter.api.domain.board.Writing
+import io.mustelidae.smallclawedotter.api.domain.board.Document
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface WritingRepository : JpaRepository<Writing, Long>
+interface DocumentRepository : JpaRepository<Document, Long>

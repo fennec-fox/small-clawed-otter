@@ -1,7 +1,7 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
 import io.mustelidae.smallclawedotter.api.domain.board.api.BoardResources
-import io.mustelidae.smallclawedotter.api.domain.board.repository.WritingRepository
+import io.mustelidae.smallclawedotter.api.domain.board.repository.DocumentRepository
 import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class NoticeBoardInteraction(
-    private val writingRepository: WritingRepository
+    private val documentRepository: DocumentRepository
 ) {
 
-    fun write(topic: Topic, request: BoardResources.Request.TextDoc): Writing {
+    fun write(topic: Topic, request: BoardResources.Request.TextDoc): Document {
         val textBaseWriting = TextBaseWriting(topic)
 
         textBaseWriting.write(
@@ -35,10 +35,10 @@ class NoticeBoardInteraction(
             }
         }
 
-        return writingRepository.save(textBaseWriting.writing)
+        return documentRepository.save(textBaseWriting.document)
     }
 
-    fun write(topic: Topic, request: BoardResources.Request.ImageDoc): Writing {
+    fun write(topic: Topic, request: BoardResources.Request.ImageDoc): Document {
         val imageBaseWriting = ImageBaseWriting(topic)
         val attachments = request.images.map {
             Attachment(Attachment.Type.IMAGE, it.order, it.path).apply { this.thumbnail = it.thumbnail }
@@ -52,6 +52,6 @@ class NoticeBoardInteraction(
         if (request.startTerm != null && request.endTerm != null)
             imageBaseWriting.setTerm(request.startTerm, request.endTerm)
 
-        return writingRepository.save(imageBaseWriting.writing)
+        return documentRepository.save(imageBaseWriting.document)
     }
 }
