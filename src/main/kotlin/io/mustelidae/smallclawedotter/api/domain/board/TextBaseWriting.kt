@@ -10,12 +10,12 @@ class TextBaseWriting {
     constructor(topic: Topic) {
         this.topic = topic
     }
-    constructor(article: Article) {
-        this.article = article
-        this.topic = article.topic!!
+    constructor(document: Document) {
+        this.document = document
+        this.topic = document.topic!!
     }
 
-    lateinit var article: Article
+    lateinit var document: Document
         private set
     private val topic: Topic
 
@@ -25,9 +25,9 @@ class TextBaseWriting {
         text: String,
         summary: String? = null
     ) {
-        this.article = Article(title, summary)
-        this.article.setBy(topic)
-        this.article.setBy(
+        this.document = Document(title, summary)
+        this.document.setBy(topic)
+        this.document.setBy(
             Paragraph(type, text)
         )
     }
@@ -37,7 +37,7 @@ class TextBaseWriting {
         text: String,
         summary: String? = null,
     ) {
-        this.article.apply {
+        this.document.apply {
             this.title = title
             this.summary = summary
             this.paragraph!!.text = text
@@ -45,17 +45,17 @@ class TextBaseWriting {
     }
 
     fun setTerm(start: LocalDateTime, end: LocalDateTime) {
-        this.article.setTerm(start, end)
+        this.document.setTerm(start, end)
     }
 
     fun addAttachment(type: Attachment.Type, order: Int, path: String) {
-        article.addBy(
+        document.addBy(
             Attachment(type, order, path)
         )
     }
 
     fun removeAttachment(id: Long) {
-        val attachment = article.attachments.find { it.id == id }
+        val attachment = document.attachments.find { it.id == id }
         attachment?.expire()
     }
 }

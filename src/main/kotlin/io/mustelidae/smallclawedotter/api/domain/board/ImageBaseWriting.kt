@@ -10,12 +10,12 @@ class ImageBaseWriting {
     constructor(topic: Topic) {
         this.topic = topic
     }
-    constructor(article: Article) {
-        this.article = article
-        this.topic = article.topic!!
+    constructor(document: Document) {
+        this.document = document
+        this.topic = document.topic!!
     }
 
-    lateinit var article: Article
+    lateinit var document: Document
         private set
     private val topic: Topic
 
@@ -24,20 +24,20 @@ class ImageBaseWriting {
         attachments: List<Attachment>,
         summary: String? = null
     ) {
-        this.article = Article(title, summary)
-        this.article.setBy(topic)
-        attachments.forEach { it.setBy(article) }
+        this.document = Document(title, summary)
+        this.document.setBy(topic)
+        attachments.forEach { it.setBy(document) }
     }
 
     fun setTerm(start: LocalDateTime, end: LocalDateTime) {
-        this.article.setTerm(start, end)
+        this.document.setTerm(start, end)
     }
 
     fun modify(
         title: String,
         summary: String? = null
     ) {
-        this.article.apply {
+        this.document.apply {
             this.title = title
             this.summary = summary
         }

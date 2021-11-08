@@ -1,6 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board.repository
 
-import io.mustelidae.smallclawedotter.api.domain.board.Article
+import io.mustelidae.smallclawedotter.api.domain.board.Document
 import io.mustelidae.smallclawedotter.api.domain.board.QDocument.document
 import io.mustelidae.smallclawedotter.api.domain.topic.QTopic.topic
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 
 @Repository
-class ArticleDSLRepository : QuerydslRepositorySupport(Article::class.java) {
+class DocumentDSLRepository : QuerydslRepositorySupport(Document::class.java) {
 
-    fun findAllByTopic(code: String): List<Article>? {
+    fun findAllByTopic(code: String): List<Document>? {
         val now = LocalDateTime.now()
 
         return from(document)

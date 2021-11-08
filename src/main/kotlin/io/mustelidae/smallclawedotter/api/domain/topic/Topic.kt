@@ -1,7 +1,7 @@
 package io.mustelidae.smallclawedotter.api.domain.topic
 
 import io.mustelidae.smallclawedotter.api.common.Audit
-import io.mustelidae.smallclawedotter.api.domain.board.Article
+import io.mustelidae.smallclawedotter.api.domain.board.Document
 import org.bson.types.ObjectId
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -23,7 +23,7 @@ class Topic(
         protected set
 
     @OneToMany(mappedBy = "topic")
-    var articles: MutableList<Article> = arrayListOf()
+    var documents: MutableList<Document> = arrayListOf()
         protected set
 
     var expired = false
@@ -32,9 +32,9 @@ class Topic(
         this.expired = true
     }
 
-    fun addBy(article: Article) {
-        articles.add(article)
-        if (article.topic != this)
-            article.setBy(this)
+    fun addBy(document: Document) {
+        documents.add(document)
+        if (document.topic != this)
+            document.setBy(this)
     }
 }

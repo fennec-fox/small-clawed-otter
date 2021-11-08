@@ -5,35 +5,35 @@ import io.mustelidae.smallclawedotter.utils.invokeId
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-internal class ArticleTest {
+internal class DocumentTest {
 
     @Test
     fun onHiddenTest() {
-        val article = Article.aFixture(true)
+        val document = Document.aFixture(true)
 
-        article.onHidden(LocalDateTime.now().plusDays(1))
+        document.onHidden(LocalDateTime.now().plusDays(1))
 
-        article.isHidden() shouldBe true
+        document.isHidden() shouldBe true
 
-        article.onHidden(LocalDateTime.now().minusDays(1))
+        document.onHidden(LocalDateTime.now().minusDays(1))
 
-        article.isHidden() shouldBe false
+        document.isHidden() shouldBe false
 
-        article.offHidden()
+        document.offHidden()
 
-        article.isHidden() shouldBe false
+        document.isHidden() shouldBe false
     }
 }
 
-internal fun Article.Companion.aFixture(hasId: Boolean = false): Article {
-    val article = Article(
+internal fun Document.Companion.aFixture(hasId: Boolean = false): Document {
+    val document = Document(
         "test notice",
         "welcome!"
     ).apply {
         invokeId(this, hasId)
     }
 
-    article.setBy(
+    document.setBy(
         Paragraph(
             Paragraph.Type.MARKDOWN,
             """
@@ -117,7 +117,7 @@ internal fun Article.Companion.aFixture(hasId: Boolean = false): Article {
         )
     )
 
-    article.addBy(
+    document.addBy(
         Attachment(
             Attachment.Type.IMAGE,
             1,
@@ -125,5 +125,5 @@ internal fun Article.Companion.aFixture(hasId: Boolean = false): Article {
         )
     )
 
-    return article
+    return document
 }

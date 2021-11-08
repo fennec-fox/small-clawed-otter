@@ -20,7 +20,7 @@ import javax.persistence.OneToOne
  * @ref https://dev.mysql.com/doc/refman/8.0/en/blob.html
  */
 @Entity
-class Article(
+class Document(
     @Column(length = 1000)
     var title: String,
     @Column(length = 2000)
@@ -32,7 +32,7 @@ class Article(
     var paragraph: Paragraph? = null
         protected set
 
-    @OneToMany(mappedBy = "article", cascade = [CascadeType.ALL])
+    @OneToMany(mappedBy = "document", cascade = [CascadeType.ALL])
     var attachments: MutableList<Attachment> = arrayListOf()
         protected set
 
@@ -61,13 +61,13 @@ class Article(
 
     fun setBy(paragraph: Paragraph) {
         this.paragraph = paragraph
-        if (paragraph.article != this)
+        if (paragraph.document != this)
             paragraph.setBy(this)
     }
 
     fun addBy(attachment: Attachment) {
         attachments.add(attachment)
-        if (attachment.article != this)
+        if (attachment.document != this)
             attachment.setBy(this)
     }
 
@@ -103,7 +103,7 @@ class Article(
 
     fun setBy(topic: Topic) {
         this.topic = topic
-        if (topic.articles.contains(this).not())
+        if (topic.documents.contains(this).not())
             topic.addBy(this)
     }
 
