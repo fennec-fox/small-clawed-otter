@@ -43,13 +43,13 @@ class Attachment(
 
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinColumn(name = "document_id")
-    var document: Document? = null
+    var article: Article? = null
         protected set
 
-    fun setBy(document: Document) {
-        this.document = document
-        if (document.attachments.contains(this).not())
-            document.addBy(this)
+    fun setBy(article: Article) {
+        this.article = article
+        if (article.attachments.contains(this).not())
+            article.addBy(this)
     }
 
     fun expire() {

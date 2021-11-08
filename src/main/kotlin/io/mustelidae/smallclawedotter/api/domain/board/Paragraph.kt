@@ -23,7 +23,7 @@ class Paragraph(
     var id: Long? = null
         protected set
     @OneToOne(mappedBy = "paragraph")
-    var document: Document? = null
+    var article: Article? = null
         protected set
 
     enum class Type {
@@ -32,9 +32,9 @@ class Paragraph(
         MARKDOWN
     }
 
-    fun setBy(document: Document) {
-        this.document = document
-        if (document.paragraph != this)
-            document.setBy(this)
+    fun setBy(article: Article) {
+        this.article = article
+        if (article.paragraph != this)
+            article.setBy(this)
     }
 }
