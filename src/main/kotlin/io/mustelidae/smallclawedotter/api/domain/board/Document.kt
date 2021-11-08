@@ -1,5 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
+import io.mustelidae.smallclawedotter.api.config.InvalidArgumentException
 import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
 import javax.persistence.CascadeType
@@ -21,9 +22,9 @@ import javax.persistence.OneToOne
 @Entity
 class Document(
     @Column(length = 1000)
-    val title: String,
+    var title: String,
     @Column(length = 2000)
-    val summary: String? = null
+    var summary: String? = null
 ) {
 
     @OneToOne(cascade = [CascadeType.ALL])
@@ -71,6 +72,10 @@ class Document(
     }
 
     fun setTerm(start: LocalDateTime, end: LocalDateTime) {
+
+        if (start.isAfter(end))
+            throw InvalidArgumentException("글 게시일의 기간이 시작 날짜가 종료날짜보다 큽니다.")
+
         this.effectiveDate = start
         this.expirationDate = end
     }

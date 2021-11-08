@@ -15,7 +15,7 @@ class Paragraph(
     val type: Type,
     @Lob
     @Column(columnDefinition = "CLOB")
-    val text: String
+    var text: String
 ) {
 
     @Id

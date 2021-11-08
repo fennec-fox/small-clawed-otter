@@ -1,5 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
+import io.mustelidae.smallclawedotter.api.common.Audit
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -23,7 +24,7 @@ class Attachment(
     val order: Int,
     @Column(length = 1500)
     var path: String
-) {
+) : Audit() {
 
     @Id
     @GeneratedValue

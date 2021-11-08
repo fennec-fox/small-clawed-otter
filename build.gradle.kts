@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.data:spring-data-envers")
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -37,6 +38,7 @@ dependencies {
     implementation("org.mongodb:bson:4.3.3")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.reflections:reflections:0.10.2")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -48,6 +50,10 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:5.0.0")
 
     runtimeOnly("mysql:mysql-connector-java:8.0.21")
+
+    testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
+
+
 }
 
 noArg {
