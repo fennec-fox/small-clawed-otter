@@ -1,5 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
+import io.mustelidae.smallclawedotter.api.common.Audit
 import io.mustelidae.smallclawedotter.api.config.InvalidArgumentException
 import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
@@ -25,7 +26,7 @@ class Writing(
     var title: String,
     @Column(length = 2000)
     var summary: String? = null
-) {
+) : Audit() {
 
     @OneToOne(cascade = [CascadeType.ALL])
     @JoinColumn(name = "paragraph_id")

@@ -4,7 +4,7 @@ import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
 
 /**
- * only image document
+ * only image writing
  */
 class ImageBaseWriting {
     constructor(topic: Topic) {

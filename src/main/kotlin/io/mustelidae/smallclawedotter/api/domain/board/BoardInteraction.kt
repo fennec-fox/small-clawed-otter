@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class NoticeBoardInteraction(
+class BoardInteraction(
     private val writingRepository: WritingRepository
 ) {
 

@@ -1,0 +1,57 @@
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    org.springframework.boot.actuate: off
+    org.springframework.web: debug
+    org.springframework.boot: info
+    org.springframework.orm.jpa: debug
+    org.springframework.transaction: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+    org.hibernate.tool.schema: error
+    com.zaxxer.hikari: error
+    io.swagger.models.parameters.AbstractSerializableParameter: error
+    com.kakaomobility: debug
+    springfox: off
+
+server:
+  error:
+    include-stacktrace: always
+    whitelabel:
+      enabled: false
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+
+spring:
+  main:
+    lazy-initialization: true
+  flyway:
+    enabled: false
+    baseline-on-migrate: false
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 50
+        enable_lazy_load_no_trans: false
+        format_sql: true
+---
+spring:
+  config:
+    activate:
+      on-profile: embedded
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:default;DB_CLOSE_ON_EXIT=FALSE;AUTOCOMMIT=OFF;TRACE_LEVEL_FILE=2
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  main:
+    lazy-initialization: false
+    allow-bean-definition-overriding: true
+

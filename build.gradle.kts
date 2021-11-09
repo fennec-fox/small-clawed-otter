@@ -37,19 +37,20 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.mongodb:bson:4.3.3")
     runtimeOnly("mysql:mysql-connector-java")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.reflections:reflections:0.10.2")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
 
+    testImplementation("com.h2database:h2")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("com.querydsl:querydsl-jpa:5.0.0")
-
-    runtimeOnly("mysql:mysql-connector-java:8.0.21")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
 

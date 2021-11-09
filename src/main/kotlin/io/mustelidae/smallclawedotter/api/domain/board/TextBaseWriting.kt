@@ -4,7 +4,7 @@ import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
 
 /**
- * Text base document
+ * Text base writing
  */
 class TextBaseWriting {
     constructor(topic: Topic) {

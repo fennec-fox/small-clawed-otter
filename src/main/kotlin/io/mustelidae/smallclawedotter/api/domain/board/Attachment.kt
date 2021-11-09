@@ -42,7 +42,7 @@ class Attachment(
     }
 
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_id")
+    @JoinColumn(name = "writing_id")
     var writing: Writing? = null
         protected set
 
