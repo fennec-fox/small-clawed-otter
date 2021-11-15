@@ -7,7 +7,7 @@ logging:
     org.springframework.orm.jpa: debug
     org.springframework.transaction: debug
     org.hibernate.SQL: debug
-    org.hibernate.type: trace
+    org.hibernate.type: off
     org.hibernate.tool.schema: error
     com.zaxxer.hikari: error
     io.swagger.models.parameters.AbstractSerializableParameter: error

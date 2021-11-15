@@ -84,4 +84,4 @@ open class PolicyException(error: ErrorSource) : CustomException(error)
  */
 open class UnAuthorizedException(error: ErrorSource) : CustomException(error)
 
-class PermissionException(message: String) : UnAuthorizedException(Error(ErrorCode.HA00, message))
+class PermissionException(message: String) : UnAuthorizedException(Error(ErrorCode.HA01, message))

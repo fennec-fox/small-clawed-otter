@@ -8,6 +8,7 @@ enum class ErrorCode(val summary: String) {
     HD01("No results found"),
 
     HA00("Unauthorized"),
+    HA01("Unauthorized Data Relation"),
 
     HI00("Invalid Input"),
     HI01("Invalid argument"),

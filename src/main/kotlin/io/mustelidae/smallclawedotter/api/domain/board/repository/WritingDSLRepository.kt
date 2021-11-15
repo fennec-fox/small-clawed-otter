@@ -15,11 +15,12 @@ class WritingDSLRepository : QuerydslRepositorySupport(Writing::class.java) {
 
         return from(writing)
             .innerJoin(writing.topic, topic)
+            .rightJoin(writing)
             .where(
                 writing.expired.isFalse
                     .and(topic.code.eq(code))
-                    .and(writing.effectiveDate.goe(now))
-                    .and(writing.expirationDate.gt(now))
+                    .and(writing.effectiveDate.loe(now).or(writing.effectiveDate.isNull))
+                    .and(writing.expirationDate.goe(now).or(writing.expirationDate.isNull))
             ).fetch()
     }
 }

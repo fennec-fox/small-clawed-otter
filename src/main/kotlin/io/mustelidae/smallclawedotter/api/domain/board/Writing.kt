@@ -25,11 +25,11 @@ class Writing(
     @Column(length = 1000)
     var title: String,
     @Column(length = 2000)
-    var summary: String? = null
+    var summary: String? = null,
 ) : Audit() {
 
-    @OneToOne(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "paragraph_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JoinColumn(name = "paragraphId")
     var paragraph: Paragraph? = null
         protected set
 
@@ -38,7 +38,7 @@ class Writing(
         protected set
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "topic_id")
+    @JoinColumn(name = "topicId")
     var topic: Topic? = null
         protected set
 

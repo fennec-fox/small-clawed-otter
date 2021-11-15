@@ -21,12 +21,16 @@ class ImageBaseWriting {
 
     fun write(
         title: String,
-        attachments: List<Attachment>,
         summary: String? = null
     ) {
         this.writing = Writing(title, summary)
         this.writing.setBy(topic)
-        attachments.forEach { it.setBy(writing) }
+    }
+
+    fun addImage(order: Int, path: String, thumbnail: String? = null) {
+        this.writing.addBy(
+            Attachment(Attachment.Type.IMAGE, order, path).apply { this.thumbnail = thumbnail }
+        )
     }
 
     fun setTerm(start: LocalDateTime, end: LocalDateTime) {

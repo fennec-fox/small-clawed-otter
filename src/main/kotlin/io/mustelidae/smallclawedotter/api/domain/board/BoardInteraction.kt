@@ -40,14 +40,15 @@ class BoardInteraction(
 
     fun write(topic: Topic, request: BoardResources.Request.ImageDoc): Writing {
         val imageBaseWriting = ImageBaseWriting(topic)
-        val attachments = request.images.map {
-            Attachment(Attachment.Type.IMAGE, it.order, it.path).apply { this.thumbnail = it.thumbnail }
-        }
+
         imageBaseWriting.write(
             request.title,
-            attachments,
             request.summary
         )
+
+        request.images.forEach {
+            imageBaseWriting.addImage(it.order, it.path, it.thumbnail)
+        }
 
         if (request.startTerm != null && request.endTerm != null)
             imageBaseWriting.setTerm(request.startTerm, request.endTerm)

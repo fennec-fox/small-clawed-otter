@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.put
 class TopicFlowSupport(
     private val mockMvc: MockMvc,
     val code: String = ObjectId().toString(),
-    private val request: TopicResources.Request = TopicResources.Request(code, "Test Topic", "Flow test")
+    val request: TopicResources.Request = TopicResources.Request(code, "Test Topic", "Flow test")
 ) {
     val productCode = ProductCode.NOTICE
 

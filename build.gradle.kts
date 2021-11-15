@@ -29,7 +29,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.data:spring-data-envers")
     implementation("org.flywaydb:flyway-core")
@@ -48,9 +47,10 @@ dependencies {
 
     testImplementation("com.h2database:h2")
     kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-
+    implementation("com.querydsl:querydsl-core:5.0.0")
     implementation("com.querydsl:querydsl-jpa:5.0.0")
+
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
 
