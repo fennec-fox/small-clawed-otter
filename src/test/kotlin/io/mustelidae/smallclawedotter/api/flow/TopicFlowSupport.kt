@@ -5,10 +5,12 @@ import io.kotest.matchers.shouldNotBe
 import io.mustelidae.smallclawedotter.api.common.ProductCode
 import io.mustelidae.smallclawedotter.api.common.Replies
 import io.mustelidae.smallclawedotter.api.common.Reply
+import io.mustelidae.smallclawedotter.api.domain.permission.RoleHeader
 import io.mustelidae.smallclawedotter.api.domain.topic.api.TopicController
 import io.mustelidae.smallclawedotter.api.domain.topic.api.TopicResources
 import io.mustelidae.smallclawedotter.api.utils.fromJson
 import io.mustelidae.smallclawedotter.api.utils.toJson
+import io.mustelidae.smallclawedotter.utils.FixtureID
 import io.mustelidae.smallclawedotter.utils.target
 import org.bson.types.ObjectId
 import org.springframework.hateoas.server.mvc.linkTo
@@ -22,15 +24,17 @@ import org.springframework.test.web.servlet.put
 class TopicFlowSupport(
     private val mockMvc: MockMvc,
     val code: String = ObjectId().toString(),
-    val request: TopicResources.Request = TopicResources.Request(code, "Test Topic", "Flow test")
+    val request: TopicResources.Request = TopicResources.Request(code, "Test Topic", "Flow test"),
+    private val adminId: Long = FixtureID.userId()
 ) {
     val productCode = ProductCode.NOTICE
 
     fun add(): Long {
-        return mockMvc.post(linkTo<TopicController> { add(productCode, request) }.toUri()) {
+        return mockMvc.post(linkTo<TopicController> { add(adminId, productCode, request) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
             content = request.toJson()
+            header(RoleHeader.XAdmin.KEY, adminId)
         }.andExpect {
             status { is2xxSuccessful() }
             content {

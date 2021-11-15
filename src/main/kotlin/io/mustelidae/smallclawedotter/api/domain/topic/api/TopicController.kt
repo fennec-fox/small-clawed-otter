@@ -5,6 +5,7 @@ import io.mustelidae.smallclawedotter.api.common.Replies
 import io.mustelidae.smallclawedotter.api.common.Reply
 import io.mustelidae.smallclawedotter.api.common.toReplies
 import io.mustelidae.smallclawedotter.api.common.toReply
+import io.mustelidae.smallclawedotter.api.domain.permission.RoleHeader
 import io.mustelidae.smallclawedotter.api.domain.topic.TopicFinder
 import io.mustelidae.smallclawedotter.api.domain.topic.TopicInteraction
 import org.bson.types.ObjectId
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
@@ -29,6 +31,7 @@ class TopicController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun add(
+        @RequestHeader(RoleHeader.XAdmin.KEY) adminId: Long,
         @PathVariable productCode: ProductCode,
         @RequestBody request: TopicResources.Request
     ): Reply<Long> {
