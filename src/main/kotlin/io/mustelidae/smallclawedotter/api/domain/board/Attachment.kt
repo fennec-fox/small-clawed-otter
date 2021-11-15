@@ -20,7 +20,7 @@ class Attachment(
     @Enumerated(EnumType.STRING)
     @Column(length = 100)
     val type: Type,
-    @Column(name = "att_order")
+    @Column(name = "attOrder")
     val order: Int,
     @Column(length = 1500)
     var path: String
@@ -42,7 +42,7 @@ class Attachment(
     }
 
     @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    @JoinColumn(name = "writing_id")
+    @JoinColumn(name = "writingId")
     var writing: Writing? = null
         protected set
 

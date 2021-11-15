@@ -27,7 +27,6 @@ class Paragraph(
         protected set
 
     enum class Type {
-        JSON,
         HTML,
         MARKDOWN
     }
