@@ -2,6 +2,7 @@ package io.mustelidae.smallclawedotter.api.domain.board.api
 
 import io.kotest.assertions.asClue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.mustelidae.smallclawedotter.api.common.ProductCode
 import io.mustelidae.smallclawedotter.api.domain.board.Paragraph
 import io.mustelidae.smallclawedotter.api.domain.topic.api.TopicResources
@@ -108,8 +109,46 @@ class BoardControllerFlowTest : IntegrationSupport() {
         val article = boardFlowSupport.findOne(id)
         article.asClue {
             it.title shouldBe request.title
-            it.articleParagraph!!.text shouldBe request.text
-            it.articleParagraph
+            it.paragraph!!.text shouldBe request.text
+            it.paragraph
+        }
+    }
+
+    @Test
+    @Order(4)
+    fun modifyText() {
+        // Given
+        val request = BoardResources.Request.TextDoc(
+            "Original Title",
+            Paragraph.Type.MARKDOWN,
+            "## This is a Original Text H2",
+            "This is summary",
+            files = listOf(
+                BoardResources.Request.TextDoc.File(1, "https://www.naver.com/")
+            )
+        )
+
+        val modify = BoardResources.Modify.TextDoc(
+            "Modified Title",
+            "### This is a Modified Text H3",
+            null,
+            startTerm = LocalDateTime.now().plusDays(1),
+            endTerm = LocalDateTime.now().plusDays(4)
+        )
+
+        val boardFlowSupport = BoardFlowSupport(mockMvc, productCode, topic.code)
+        val id = boardFlowSupport.writeText()
+        // When
+        boardFlowSupport.modify(id, modify)
+        // Then
+        val article = boardFlowSupport.findOne(id)
+
+        article.asClue {
+            it.title shouldBe modify.title
+            it.paragraph!!.text shouldBe modify.text
+            it.startTerm!! shouldNotBe null
+            it.endTerm!! shouldNotBe null
+            it.attachments!!.size shouldBe request.files!!.size
         }
     }
 }

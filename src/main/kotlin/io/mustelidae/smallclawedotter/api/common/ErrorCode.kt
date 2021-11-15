@@ -6,6 +6,7 @@ enum class ErrorCode(val summary: String) {
 
     HD00("Data not found"),
     HD01("No results found"),
+    HD02("Data mismatch uri"),
 
     HA00("Unauthorized"),
     HA01("Unauthorized Data Relation"),

@@ -34,8 +34,6 @@ class Attachment(
     @Column(length = 1500)
     var thumbnail: String? = null
 
-    var expired = false
-
     enum class Type {
         FILE,
         IMAGE
@@ -50,9 +48,5 @@ class Attachment(
         this.writing = writing
         if (writing.attachments.contains(this).not())
             writing.addBy(this)
-    }
-
-    fun expire() {
-        this.expired = true
     }
 }

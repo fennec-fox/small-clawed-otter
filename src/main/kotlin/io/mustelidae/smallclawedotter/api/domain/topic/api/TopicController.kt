@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/product/{productCode}/topics")
+@RequestMapping("/maintenance/product/{productCode}/topics")
 class TopicController(
     private val topicInteraction: TopicInteraction,
     private val topicFinder: TopicFinder

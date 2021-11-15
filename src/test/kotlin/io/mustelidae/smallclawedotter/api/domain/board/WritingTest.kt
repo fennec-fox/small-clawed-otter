@@ -27,6 +27,7 @@ internal class WritingTest {
 
 internal fun Writing.Companion.aFixture(hasId: Boolean = false): Writing {
     val writing = Writing(
+        Writing.Type.TEXT,
         "test notice",
         "welcome!"
     ).apply {

@@ -5,6 +5,7 @@ import io.mustelidae.smallclawedotter.api.common.Replies
 import io.mustelidae.smallclawedotter.api.common.Reply
 import io.mustelidae.smallclawedotter.api.domain.board.Paragraph
 import io.mustelidae.smallclawedotter.api.domain.board.api.BoardController
+import io.mustelidae.smallclawedotter.api.domain.board.api.BoardMaintenanceController
 import io.mustelidae.smallclawedotter.api.domain.board.api.BoardResources
 import io.mustelidae.smallclawedotter.api.domain.permission.RoleHeader
 import io.mustelidae.smallclawedotter.api.utils.fromJson
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 import java.time.LocalDateTime
 
 class BoardFlowSupport(
@@ -38,7 +40,7 @@ class BoardFlowSupport(
         )
     ): Long {
 
-        return mockMvc.post(linkTo<BoardController> { writeTextArticle(adminId, productCode, topicCode, request) }.toUri()) {
+        return mockMvc.post(linkTo<BoardMaintenanceController> { writeTextArticle(adminId, productCode, topicCode, request) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
             content = request.toJson()
@@ -60,7 +62,7 @@ class BoardFlowSupport(
             )
         )
     ): Long {
-        return mockMvc.post(linkTo<BoardController> { writeImageArticle(adminId, productCode, topicCode, request) }.toUri()) {
+        return mockMvc.post(linkTo<BoardMaintenanceController> { writeImageArticle(adminId, productCode, topicCode, request) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
             content = request.toJson()
@@ -73,7 +75,7 @@ class BoardFlowSupport(
             .content!!
     }
 
-    fun findAll(): List<BoardResources.Reply.ArticleSummary> {
+    fun findAll(): List<BoardResources.Reply.Article> {
         return mockMvc.get(linkTo<BoardController> { findAll(productCode, topicCode) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
@@ -81,7 +83,7 @@ class BoardFlowSupport(
             status { is2xxSuccessful() }
         }.andReturn()
             .response.contentAsString
-            .fromJson<Replies<BoardResources.Reply.ArticleSummary>>()
+            .fromJson<Replies<BoardResources.Reply.Article>>()
             .getContent()
             .toList()
     }
@@ -96,5 +98,27 @@ class BoardFlowSupport(
             .response.contentAsString
             .fromJson<Reply<BoardResources.Reply.ArticleWithParagraph>>()
             .content!!
+    }
+
+    fun modify(articleId: Long, modify: BoardResources.Modify.TextDoc) {
+        mockMvc.put(linkTo<BoardMaintenanceController> { modifyTextArticle(adminId, productCode, topicCode, articleId, modify) }.toUri()) {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = modify.toJson()
+            header(RoleHeader.XAdmin.KEY, adminId)
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }
+    }
+
+    fun modify(articleId: Long, modify: BoardResources.Modify.ImageDoc) {
+        mockMvc.put(linkTo<BoardMaintenanceController> { modifyImageArticle(adminId, productCode, topicCode, articleId, modify) }.toUri()) {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = modify.toJson()
+            header(RoleHeader.XAdmin.KEY, adminId)
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }
     }
 }

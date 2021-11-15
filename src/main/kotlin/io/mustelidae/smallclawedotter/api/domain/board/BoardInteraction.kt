@@ -1,18 +1,23 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
 import io.mustelidae.smallclawedotter.api.domain.board.api.BoardResources
+import io.mustelidae.smallclawedotter.api.domain.board.repository.AttachmentRepository
 import io.mustelidae.smallclawedotter.api.domain.board.repository.WritingRepository
-import io.mustelidae.smallclawedotter.api.domain.topic.Topic
+import io.mustelidae.smallclawedotter.api.domain.topic.TopicFinder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
 class BoardInteraction(
-    private val writingRepository: WritingRepository
+    private val writingRepository: WritingRepository,
+    private val writingFinder: WritingFinder,
+    private val attachmentRepository: AttachmentRepository,
+    private val topicFinder: TopicFinder
 ) {
 
-    fun write(topic: Topic, request: BoardResources.Request.TextDoc): Writing {
+    fun write(topicCode: String, request: BoardResources.Request.TextDoc): Writing {
+        val topic = topicFinder.findOne(topicCode)
         val textBaseWriting = TextBaseWriting(topic)
 
         textBaseWriting.write(
@@ -38,7 +43,24 @@ class BoardInteraction(
         return writingRepository.save(textBaseWriting.writing)
     }
 
-    fun write(topic: Topic, request: BoardResources.Request.ImageDoc): Writing {
+    fun modify(writingId: Long, modify: BoardResources.Modify.TextDoc): Writing {
+        val writing = writingFinder.findOne(writingId)
+
+        val textBaseWriting = TextBaseWriting(writing)
+        textBaseWriting.modify(
+            modify.title,
+            modify.text,
+            modify.summary
+        )
+
+        if (modify.hasTerm())
+            textBaseWriting.setTerm(modify.startTerm!!, modify.endTerm!!)
+
+        return writingRepository.save(textBaseWriting.writing)
+    }
+
+    fun write(topicCode: String, request: BoardResources.Request.ImageDoc): Writing {
+        val topic = topicFinder.findOne(topicCode)
         val imageBaseWriting = ImageBaseWriting(topic)
 
         imageBaseWriting.write(
@@ -52,6 +74,28 @@ class BoardInteraction(
 
         if (request.startTerm != null && request.endTerm != null)
             imageBaseWriting.setTerm(request.startTerm, request.endTerm)
+
+        return writingRepository.save(imageBaseWriting.writing)
+    }
+
+    fun modify(writingId: Long, modify: BoardResources.Modify.ImageDoc): Writing {
+        // 기존에 attach된 걸 모두 삭제하고 다시 등록
+        attachmentRepository.removeAttachmentsByWritingId(writingId)
+
+        val writing = writingFinder.findOne(writingId)
+        val imageBaseWriting = ImageBaseWriting(writing)
+
+        imageBaseWriting.modify(
+            modify.title,
+            modify.summary
+        )
+
+        modify.images.forEach {
+            imageBaseWriting.addImage(it.order, it.path, it.thumbnail)
+        }
+
+        if (modify.hasTerm())
+            imageBaseWriting.setTerm(modify.startTerm!!, modify.endTerm!!)
 
         return writingRepository.save(imageBaseWriting.writing)
     }

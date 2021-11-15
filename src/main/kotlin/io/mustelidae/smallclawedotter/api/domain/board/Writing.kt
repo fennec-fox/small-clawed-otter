@@ -7,6 +7,8 @@ import java.time.LocalDateTime
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -22,6 +24,9 @@ import javax.persistence.OneToOne
  */
 @Entity
 class Writing(
+    @Column(length = 20)
+    @Enumerated(EnumType.STRING)
+    val type: Type,
     @Column(length = 1000)
     var title: String,
     @Column(length = 2000)
@@ -72,13 +77,13 @@ class Writing(
             attachment.setBy(this)
     }
 
-    fun setTerm(start: LocalDateTime, end: LocalDateTime) {
+    fun setTerm(startTerm: LocalDateTime, endTerm: LocalDateTime) {
 
-        if (start.isAfter(end))
+        if (startTerm.isAfter(endTerm))
             throw InvalidArgumentException("글 게시일의 기간이 시작 날짜가 종료날짜보다 큽니다.")
 
-        this.effectiveDate = start
-        this.expirationDate = end
+        this.effectiveDate = startTerm
+        this.expirationDate = endTerm
     }
 
     fun onHidden(restoreHiddenDateTime: LocalDateTime) {
@@ -106,6 +111,11 @@ class Writing(
         this.topic = topic
         if (topic.writings.contains(this).not())
             topic.addBy(this)
+    }
+
+    enum class Type {
+        IMAGE,
+        TEXT
     }
 
     companion object

@@ -13,6 +13,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
 import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.PRECONDITION_FAILED
 import org.springframework.http.HttpStatus.UNAUTHORIZED
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -155,6 +156,16 @@ class ExceptionConfiguration(
     @ResponseBody
     fun dataNotFindException(
         e: DataNotFindException,
+        request: HttpServletRequest
+    ): Map<String, Any> {
+        return errorForm(request, e, e.error)
+    }
+
+    @ExceptionHandler(value = [PreconditionFailException::class])
+    @ResponseStatus(PRECONDITION_FAILED)
+    @ResponseBody
+    fun preconditionFailException(
+        e: PreconditionFailException,
         request: HttpServletRequest
     ): Map<String, Any> {
         return errorForm(request, e, e.error)

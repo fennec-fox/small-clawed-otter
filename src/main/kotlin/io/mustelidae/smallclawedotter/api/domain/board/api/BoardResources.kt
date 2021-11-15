@@ -1,5 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board.api
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import io.mustelidae.smallclawedotter.api.domain.board.Attachment
 import io.mustelidae.smallclawedotter.api.domain.board.Paragraph
 import io.mustelidae.smallclawedotter.api.domain.board.Writing
@@ -42,26 +43,72 @@ class BoardResources {
         }
     }
 
+    class Modify {
+        data class TextDoc(
+            val title: String,
+            val text: String,
+            val summary: String? = null,
+            val startTerm: LocalDateTime? = null,
+            val endTerm: LocalDateTime? = null,
+        ) {
+            @JsonIgnore
+            fun hasTerm(): Boolean {
+                return (startTerm != null && endTerm != null)
+            }
+        }
+
+        data class ImageDoc(
+            val title: String,
+            val images: List<Image>,
+            val summary: String? = null,
+            val startTerm: LocalDateTime? = null,
+            val endTerm: LocalDateTime? = null
+        ) {
+            data class Image(
+                val order: Int,
+                @get:URL
+                val path: String,
+                @get:URL
+                val thumbnail: String? = null
+            )
+
+            @JsonIgnore
+            fun hasTerm(): Boolean {
+                return (startTerm != null && endTerm != null)
+            }
+        }
+    }
+
     class Reply {
 
-        data class ArticleSummary(
+        data class Article(
             val id: Long,
             val createdAt: LocalDateTime,
             val modifiedAt: LocalDateTime,
             val auditor: String,
+            val type: Writing.Type,
             val title: String,
-            val summary: String? = null
+            val summary: String? = null,
+            val startTerm: LocalDateTime? = null,
+            val endTerm: LocalDateTime? = null,
+            val hidden: Boolean? = null,
+            val showDateTime: LocalDateTime? = null
         ) {
             companion object {
-                fun from(writing: Writing): ArticleSummary {
+                fun from(writing: Writing): Article {
                     return writing.run {
-                        ArticleSummary(
+                        Article(
                             id!!,
                             createdAt!!,
                             modifiedAt!!,
                             auditor!!,
+                            type,
                             title,
-                            summary
+                            summary,
+                            effectiveDate,
+                            expirationDate,
+                            hidden,
+                            showDateTime
                         )
                     }
                 }
@@ -73,34 +120,44 @@ class BoardResources {
             val createdAt: LocalDateTime,
             val modifiedAt: LocalDateTime,
             val auditor: String,
+            val type: Writing.Type,
             val title: String,
             val summary: String? = null,
-            val articleParagraph: ArticleParagraph? = null,
-            val attach: List<Attach>? = null
+            val startTerm: LocalDateTime? = null,
+            val endTerm: LocalDateTime? = null,
+            val hidden: Boolean? = null,
+            val showDateTime: LocalDateTime? = null,
+            val paragraph: ArticleParagraph? = null,
+            val attachments: List<Attach>? = null
         ) {
             private constructor(
-                articleSummary: ArticleSummary,
+                article: Article,
                 articleParagraph: ArticleParagraph? = null,
                 attach: List<Attach>? = null
             ) : this(
-                articleSummary.id,
-                articleSummary.createdAt,
-                articleSummary.modifiedAt,
-                articleSummary.auditor,
-                articleSummary.title,
-                articleSummary.summary,
+                article.id,
+                article.createdAt,
+                article.modifiedAt,
+                article.auditor,
+                article.type,
+                article.title,
+                article.summary,
+                article.startTerm,
+                article.endTerm,
+                article.hidden,
+                article.showDateTime,
                 articleParagraph,
                 attach
             )
 
             companion object {
                 fun from(writing: Writing): ArticleWithParagraph {
-                    val articleSummary = ArticleSummary.from(writing)
+                    val article = Article.from(writing)
                     val paragraph = writing.paragraph?.let { ArticleParagraph.from(it) }
                     val attach = writing.attachments.map { Attach.from(it) }
                     return writing.run {
                         ArticleWithParagraph(
-                            articleSummary,
+                            article,
                             paragraph,
                             attach
                         )

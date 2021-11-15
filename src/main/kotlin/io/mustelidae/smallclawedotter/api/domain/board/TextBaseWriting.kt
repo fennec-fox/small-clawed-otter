@@ -1,5 +1,6 @@
 package io.mustelidae.smallclawedotter.api.domain.board
 
+import io.mustelidae.smallclawedotter.api.config.PreconditionFailException
 import io.mustelidae.smallclawedotter.api.domain.topic.Topic
 import java.time.LocalDateTime
 
@@ -11,6 +12,9 @@ class TextBaseWriting {
         this.topic = topic
     }
     constructor(writing: Writing) {
+        if (writing.type != Writing.Type.TEXT)
+            throw PreconditionFailException("해당 글은 text 타입이 아닙니다.")
+
         this.writing = writing
         this.topic = writing.topic!!
     }
@@ -25,7 +29,7 @@ class TextBaseWriting {
         text: String,
         summary: String? = null
     ) {
-        this.writing = Writing(title, summary)
+        this.writing = Writing(Writing.Type.TEXT, title, summary)
         this.writing.setBy(topic)
         this.writing.setBy(
             Paragraph(type, text)
@@ -44,18 +48,13 @@ class TextBaseWriting {
         }
     }
 
-    fun setTerm(start: LocalDateTime, end: LocalDateTime) {
-        this.writing.setTerm(start, end)
+    fun setTerm(startTerm: LocalDateTime, endTerm: LocalDateTime) {
+        this.writing.setTerm(startTerm, endTerm)
     }
 
     fun addAttachment(type: Attachment.Type, order: Int, path: String) {
         writing.addBy(
             Attachment(type, order, path)
         )
-    }
-
-    fun removeAttachment(id: Long) {
-        val attachment = writing.attachments.find { it.id == id }
-        attachment?.expire()
     }
 }
