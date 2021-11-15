@@ -8,6 +8,7 @@ import io.mustelidae.smallclawedotter.api.common.toReply
 import io.mustelidae.smallclawedotter.api.domain.board.BoardInteraction
 import io.mustelidae.smallclawedotter.api.domain.board.WritingFinder
 import io.mustelidae.smallclawedotter.api.domain.permission.RoleHeader
+import io.mustelidae.smallclawedotter.api.domain.permission.TopicRelationChecker
 import io.mustelidae.smallclawedotter.api.domain.topic.TopicFinder
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -60,7 +61,11 @@ class BoardController(
         @PathVariable topicCode: String,
     ): Replies<BoardResources.Reply.ArticleSummary> {
         val topic = topicFinder.findOne(topicCode)
-        return writingFinder.findAll(topic)
+        val writings = writingFinder.findAll(topic)
+
+        TopicRelationChecker(productCode, topic).checkWritings(writings)
+
+        return writings
             .filter { it.isHidden().not() }
             .map { BoardResources.Reply.ArticleSummary.from(it) }
             .toReplies()
@@ -74,6 +79,8 @@ class BoardController(
     ): Reply<BoardResources.Reply.ArticleWithParagraph> {
         val topic = topicFinder.findOne(topicCode)
         val writing = writingFinder.findOne(id)
+
+        TopicRelationChecker(productCode, topic).checkWriting(writing)
 
         return BoardResources.Reply.ArticleWithParagraph.from(writing)
             .toReply()
