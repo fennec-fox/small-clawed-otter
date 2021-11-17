@@ -16,7 +16,7 @@ class BoardInteraction(
     private val topicFinder: TopicFinder
 ) {
 
-    fun write(topicCode: String, request: BoardResources.Request.TextDoc): Writing {
+    fun write(topicCode: String, request: BoardResources.Request.TextArticle): Writing {
         val topic = topicFinder.findOne(topicCode)
         val textBaseWriting = TextBaseWriting(topic)
 
@@ -43,7 +43,7 @@ class BoardInteraction(
         return writingRepository.save(textBaseWriting.writing)
     }
 
-    fun modify(writingId: Long, modify: BoardResources.Modify.TextDoc): Writing {
+    fun modify(writingId: Long, modify: BoardResources.Modify.TextArticle): Writing {
         val writing = writingFinder.findOne(writingId)
 
         val textBaseWriting = TextBaseWriting(writing)
@@ -59,7 +59,7 @@ class BoardInteraction(
         return writingRepository.save(textBaseWriting.writing)
     }
 
-    fun write(topicCode: String, request: BoardResources.Request.ImageDoc): Writing {
+    fun write(topicCode: String, request: BoardResources.Request.ImageArticle): Writing {
         val topic = topicFinder.findOne(topicCode)
         val imageBaseWriting = ImageBaseWriting(topic)
 
@@ -78,7 +78,7 @@ class BoardInteraction(
         return writingRepository.save(imageBaseWriting.writing)
     }
 
-    fun modify(writingId: Long, modify: BoardResources.Modify.ImageDoc): Writing {
+    fun modify(writingId: Long, modify: BoardResources.Modify.ImageArticle): Writing {
         // 기존에 attach된 걸 모두 삭제하고 다시 등록
         attachmentRepository.removeAttachmentsByWritingId(writingId)
 

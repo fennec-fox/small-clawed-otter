@@ -64,7 +64,7 @@ class BoardControllerFlowTest : IntegrationSupport() {
         boardFlowSupport.writeText()
         boardFlowSupport.writeText()
         boardFlowSupport.writeText(
-            BoardResources.Request.TextDoc(
+            BoardResources.Request.TextArticle(
                 "Tobe",
                 Paragraph.Type.MARKDOWN,
                 "",
@@ -75,9 +75,9 @@ class BoardControllerFlowTest : IntegrationSupport() {
         boardFlowSupport.writeImage()
         boardFlowSupport.writeImage()
         boardFlowSupport.writeImage(
-            BoardResources.Request.ImageDoc(
+            BoardResources.Request.ImageArticle(
                 "already past time",
-                listOf(BoardResources.Request.ImageDoc.Image(1, "")),
+                listOf(BoardResources.Request.ImageArticle.Image(1, "")),
                 startTerm = LocalDateTime.now().minusDays(3),
                 endTerm = LocalDateTime.now().minusDays(1)
             )
@@ -94,13 +94,13 @@ class BoardControllerFlowTest : IntegrationSupport() {
     fun findOne() {
         // Given
         val boardFlowSupport = BoardFlowSupport(mockMvc, productCode, topic.code)
-        val request = BoardResources.Request.TextDoc(
+        val request = BoardResources.Request.TextArticle(
             "Test Article Has Detail",
             Paragraph.Type.MARKDOWN,
             "## This is a H2",
             "This is summary",
             files = listOf(
-                BoardResources.Request.TextDoc.File(1, "https://www.naver.com/")
+                BoardResources.Request.TextArticle.File(1, "https://www.naver.com/")
             )
         )
         // When
@@ -118,17 +118,17 @@ class BoardControllerFlowTest : IntegrationSupport() {
     @Order(4)
     fun modifyText() {
         // Given
-        val request = BoardResources.Request.TextDoc(
+        val request = BoardResources.Request.TextArticle(
             "Original Title",
             Paragraph.Type.MARKDOWN,
             "## This is a Original Text H2",
             "This is summary",
             files = listOf(
-                BoardResources.Request.TextDoc.File(1, "https://www.naver.com/")
+                BoardResources.Request.TextArticle.File(1, "https://www.naver.com/")
             )
         )
 
-        val modify = BoardResources.Modify.TextDoc(
+        val modify = BoardResources.Modify.TextArticle(
             "Modified Title",
             "### This is a Modified Text H3",
             null,
@@ -149,6 +149,57 @@ class BoardControllerFlowTest : IntegrationSupport() {
             it.startTerm!! shouldNotBe null
             it.endTerm!! shouldNotBe null
             it.attachments!!.size shouldBe request.files!!.size
+        }
+    }
+
+    @Test
+    @Order(5)
+    fun modifyImage() {
+        // Given
+        val request = BoardResources.Request.ImageArticle(
+            "Original Image Title",
+            listOf(
+                BoardResources.Request.ImageArticle.Image(
+                    1,
+                    "http://1.com"
+                ),
+                BoardResources.Request.ImageArticle.Image(
+                    2,
+                    "http://2.com"
+                )
+            )
+        )
+
+        val modify = BoardResources.Modify.ImageArticle(
+            "Modify Image Title",
+            listOf(
+                BoardResources.Modify.ImageArticle.Image(
+                    1,
+                    "http://modify.com"
+                ),
+                BoardResources.Modify.ImageArticle.Image(
+                    2,
+                    "http://modify.com"
+                )
+            )
+        )
+
+        val boardFlowSupport = BoardFlowSupport(mockMvc, productCode, topic.code)
+        val id = boardFlowSupport.writeImage(request)
+
+        // When
+        boardFlowSupport.modify(id, modify)
+
+        // Then
+        val article = boardFlowSupport.findOne(id)
+
+        article.asClue {
+            it.attachments!!.size shouldBe 2
+            it.title shouldBe modify.title
+            it.paragraph shouldBe null
+            it.attachments!!.forEach { attach ->
+                attach.path shouldBe modify.images.first().path
+            }
         }
     }
 }

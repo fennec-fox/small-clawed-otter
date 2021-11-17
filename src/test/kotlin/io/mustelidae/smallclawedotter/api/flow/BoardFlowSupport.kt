@@ -27,7 +27,7 @@ class BoardFlowSupport(
 ) {
 
     fun writeText(
-        request: BoardResources.Request.TextDoc = BoardResources.Request.TextDoc(
+        request: BoardResources.Request.TextArticle = BoardResources.Request.TextArticle(
             "Test Article",
             Paragraph.Type.MARKDOWN,
             "## This is a H2",
@@ -35,7 +35,7 @@ class BoardFlowSupport(
             LocalDateTime.now().minusDays(1),
             LocalDateTime.now().plusDays(1),
             listOf(
-                BoardResources.Request.TextDoc.File(1, "https://www.naver.com/")
+                BoardResources.Request.TextArticle.File(1, "https://www.naver.com/")
             )
         )
     ): Long {
@@ -54,11 +54,11 @@ class BoardFlowSupport(
     }
 
     fun writeImage(
-        request: BoardResources.Request.ImageDoc = BoardResources.Request.ImageDoc(
+        request: BoardResources.Request.ImageArticle = BoardResources.Request.ImageArticle(
             "Test Image Article",
             listOf(
-                BoardResources.Request.ImageDoc.Image(1, "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_2x_r2.png"),
-                BoardResources.Request.ImageDoc.Image(2, "https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg")
+                BoardResources.Request.ImageArticle.Image(1, "https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_2x_r2.png"),
+                BoardResources.Request.ImageArticle.Image(2, "https://papago.naver.com/97ec80a681e94540414daf2fb855ba3b.svg")
             )
         )
     ): Long {
@@ -100,7 +100,7 @@ class BoardFlowSupport(
             .content!!
     }
 
-    fun modify(articleId: Long, modify: BoardResources.Modify.TextDoc) {
+    fun modify(articleId: Long, modify: BoardResources.Modify.TextArticle) {
         mockMvc.put(linkTo<BoardMaintenanceController> { modifyTextArticle(adminId, productCode, topicCode, articleId, modify) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
@@ -111,7 +111,7 @@ class BoardFlowSupport(
         }
     }
 
-    fun modify(articleId: Long, modify: BoardResources.Modify.ImageDoc) {
+    fun modify(articleId: Long, modify: BoardResources.Modify.ImageArticle) {
         mockMvc.put(linkTo<BoardMaintenanceController> { modifyImageArticle(adminId, productCode, topicCode, articleId, modify) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON

@@ -28,22 +28,22 @@ class BoardMaintenanceController(
         @RequestHeader(RoleHeader.XAdmin.KEY) adminId: Long,
         @PathVariable productCode: ProductCode,
         @PathVariable topicCode: String,
-        @RequestBody request: BoardResources.Request.TextDoc
+        @RequestBody request: BoardResources.Request.TextArticle
     ): Reply<Long> {
         val writing = boardInteraction.write(topicCode, request)
         TopicRelationChecker(productCode, topicCode).checkWriting(writing)
         return writing.id!!.toReply()
     }
 
-    @PutMapping("text-article/{id}")
+    @PutMapping("text-article/{articleId}")
     fun modifyTextArticle(
         @RequestHeader(RoleHeader.XAdmin.KEY) adminId: Long,
         @PathVariable productCode: ProductCode,
         @PathVariable topicCode: String,
-        @PathVariable id: Long,
-        @RequestBody modify: BoardResources.Modify.TextDoc
+        @PathVariable articleId: Long,
+        @RequestBody modify: BoardResources.Modify.TextArticle
     ): Reply<Unit> {
-        val writing = boardInteraction.modify(id, modify)
+        val writing = boardInteraction.modify(articleId, modify)
         TopicRelationChecker(productCode, topicCode).checkWriting(writing)
         return Unit.toReply()
     }
@@ -54,22 +54,22 @@ class BoardMaintenanceController(
         @RequestHeader(RoleHeader.XAdmin.KEY) adminId: Long,
         @PathVariable productCode: ProductCode,
         @PathVariable topicCode: String,
-        @RequestBody request: BoardResources.Request.ImageDoc
+        @RequestBody request: BoardResources.Request.ImageArticle
     ): Reply<Long> {
         val writing = boardInteraction.write(topicCode, request)
         TopicRelationChecker(productCode, topicCode).checkWriting(writing)
         return writing.id!!.toReply()
     }
 
-    @PutMapping("image-article/{id}")
+    @PutMapping("image-article/{articleId}")
     fun modifyImageArticle(
         @RequestHeader(RoleHeader.XAdmin.KEY) adminId: Long,
         @PathVariable productCode: ProductCode,
         @PathVariable topicCode: String,
-        @PathVariable id: Long,
-        @RequestBody modify: BoardResources.Modify.ImageDoc
+        @PathVariable articleId: Long,
+        @RequestBody modify: BoardResources.Modify.ImageArticle
     ): Reply<Unit> {
-        val writing = boardInteraction.modify(id, modify)
+        val writing = boardInteraction.modify(articleId, modify)
         TopicRelationChecker(productCode, topicCode).checkWriting(writing)
         return Unit.toReply()
     }

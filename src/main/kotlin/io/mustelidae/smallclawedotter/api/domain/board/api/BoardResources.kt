@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class BoardResources {
 
     class Request {
-        data class TextDoc(
+        data class TextArticle(
             val title: String,
             val type: Paragraph.Type,
             val text: String,
@@ -26,7 +26,7 @@ class BoardResources {
             )
         }
 
-        data class ImageDoc(
+        data class ImageArticle(
             val title: String,
             val images: List<Image>,
             val summary: String? = null,
@@ -44,7 +44,7 @@ class BoardResources {
     }
 
     class Modify {
-        data class TextDoc(
+        data class TextArticle(
             val title: String,
             val text: String,
             val summary: String? = null,
@@ -57,7 +57,7 @@ class BoardResources {
             }
         }
 
-        data class ImageDoc(
+        data class ImageArticle(
             val title: String,
             val images: List<Image>,
             val summary: String? = null,
