@@ -15,7 +15,7 @@ class Paragraph(
     val type: Type,
     @Lob
     @Column(columnDefinition = "CLOB")
-    val text: String
+    var text: String
 ) {
 
     @Id
@@ -23,18 +23,17 @@ class Paragraph(
     var id: Long? = null
         protected set
     @OneToOne(mappedBy = "paragraph")
-    var document: Document? = null
+    var writing: Writing? = null
         protected set
 
     enum class Type {
-        JSON,
         HTML,
         MARKDOWN
     }
 
-    fun setBy(document: Document) {
-        this.document = document
-        if (document.paragraph != this)
-            document.setBy(this)
+    fun setBy(writing: Writing) {
+        this.writing = writing
+        if (writing.paragraph != this)
+            writing.setBy(this)
     }
 }

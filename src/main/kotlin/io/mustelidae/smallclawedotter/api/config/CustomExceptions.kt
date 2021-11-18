@@ -10,11 +10,13 @@ open class CustomException(val error: ErrorSource) : RuntimeException(error.mess
  * Human Exception
  */
 open class HumanException(error: ErrorSource) : CustomException(error)
-open class DataNotFindException : HumanException {
+class DataNotFindException : HumanException {
     constructor(message: String) : super(Error(ErrorCode.HD00, message))
     constructor(id: String, message: String) : super(Error(ErrorCode.HD00, message, mapOf("id" to id)))
     constructor(id: Long, message: String) : this(id.toString(), message)
 }
+
+class PreconditionFailException(message: String) : HumanException(Error(ErrorCode.HD02, message))
 
 // ignore in sentry
 class DataNotSearchedException : HumanException {
@@ -84,4 +86,4 @@ open class PolicyException(error: ErrorSource) : CustomException(error)
  */
 open class UnAuthorizedException(error: ErrorSource) : CustomException(error)
 
-class PermissionException(message: String) : UnAuthorizedException(Error(ErrorCode.HA00, message))
+class PermissionException(message: String) : UnAuthorizedException(Error(ErrorCode.HA01, message))
