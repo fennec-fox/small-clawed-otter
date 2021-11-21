@@ -49,14 +49,14 @@ class TopicFlowSupport(
             .content!!
     }
 
-    fun find(): TopicResources.Response {
+    fun find(): TopicResources.Reply {
         return mockMvc.get(linkTo<TopicController> { findOne(productCode, code) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
         }.andExpect {
             status { is2xxSuccessful() }
             content {
-                target<Reply<TopicResources.Response >> {
+                target<Reply<TopicResources.Reply>> {
                     val topic = it.content!!
                     topic.name shouldNotBe null
                     topic.description shouldNotBe null
@@ -66,11 +66,11 @@ class TopicFlowSupport(
         }.andReturn()
             .response
             .contentAsString
-            .fromJson<Reply<TopicResources.Response>>()
+            .fromJson<Reply<TopicResources.Reply>>()
             .content!!
     }
 
-    fun findAll(): List<TopicResources.Response> {
+    fun findAll(): List<TopicResources.Reply> {
         return mockMvc.get(linkTo<TopicController> { findAll(productCode) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
@@ -79,7 +79,7 @@ class TopicFlowSupport(
         }.andReturn()
             .response
             .contentAsString
-            .fromJson<Replies<TopicResources.Response>>()
+            .fromJson<Replies<TopicResources.Reply>>()
             .getContent()
             .toList()
     }

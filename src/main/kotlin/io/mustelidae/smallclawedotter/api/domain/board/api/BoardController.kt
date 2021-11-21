@@ -7,17 +7,21 @@ import io.mustelidae.smallclawedotter.api.common.toReplies
 import io.mustelidae.smallclawedotter.api.common.toReply
 import io.mustelidae.smallclawedotter.api.domain.board.WritingFinder
 import io.mustelidae.smallclawedotter.api.domain.permission.TopicRelationChecker
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Api(tags = ["Board"], description = "Notice board")
 @RestController
 @RequestMapping("/product/{productCode}/topics/{topicCode}")
 class BoardController(
     private val writingFinder: WritingFinder
 ) {
 
+    @ApiOperation("Find all article")
     @GetMapping("articles")
     fun findAll(
         @PathVariable productCode: ProductCode,
@@ -33,6 +37,7 @@ class BoardController(
             .toReplies()
     }
 
+    @ApiOperation("Find article with paragraph")
     @GetMapping("articles/{id}")
     fun findOne(
         @PathVariable productCode: ProductCode,

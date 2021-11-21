@@ -22,7 +22,7 @@ import java.time.LocalDateTime
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BoardControllerFlowTest : IntegrationSupport() {
 
-    private lateinit var topic: TopicResources.Response
+    private lateinit var topic: TopicResources.Reply
     private val productCode = ProductCode.NOTICE
 
     @BeforeEach
