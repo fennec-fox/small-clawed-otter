@@ -8,6 +8,8 @@ import io.mustelidae.smallclawedotter.api.common.toReply
 import io.mustelidae.smallclawedotter.api.domain.permission.RoleHeader
 import io.mustelidae.smallclawedotter.api.domain.topic.TopicFinder
 import io.mustelidae.smallclawedotter.api.domain.topic.TopicInteraction
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 
+@Api(tags = ["Topic"], description = "Topics are context.")
 @RestController
 @RequestMapping("/maintenance/product/{productCode}/topics")
 class TopicController(
@@ -28,6 +31,7 @@ class TopicController(
     private val topicFinder: TopicFinder
 ) {
 
+    @ApiOperation("Add topic")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun add(
@@ -43,6 +47,7 @@ class TopicController(
         ).id!!.toReply()
     }
 
+    @ApiOperation("Modify topic")
     @PutMapping("{code}")
     fun modify(
         @PathVariable productCode: ProductCode,
@@ -53,22 +58,24 @@ class TopicController(
         return Unit.toReply()
     }
 
+    @ApiOperation("Find all topic")
     @GetMapping
     fun findAll(
         @PathVariable productCode: ProductCode
-    ): Replies<TopicResources.Response> {
+    ): Replies<TopicResources.Reply> {
         return topicFinder.findAll(productCode)
-            .map { TopicResources.Response.from(it) }
+            .map { TopicResources.Reply.from(it) }
             .toReplies()
     }
 
+    @ApiOperation("Find topic")
     @GetMapping("{code}")
     fun findOne(
         @PathVariable productCode: ProductCode,
         @PathVariable code: String
-    ): Reply<TopicResources.Response> {
+    ): Reply<TopicResources.Reply> {
         val topic = topicFinder.findOne(code)
-        return TopicResources.Response.from(topic)
+        return TopicResources.Reply.from(topic)
             .toReply()
     }
 

@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.5.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jmailen.kotlinter") version "3.6.0"
-    id("com.avast.gradle.docker-compose") version "0.14.4"
+    id("com.avast.gradle.docker-compose") version "0.14.9"
     kotlin("jvm") version "1.5.31"
     kotlin("plugin.spring") version "1.5.31"
     kotlin("plugin.jpa") version "1.5.31"
@@ -53,6 +53,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
 
 
 }

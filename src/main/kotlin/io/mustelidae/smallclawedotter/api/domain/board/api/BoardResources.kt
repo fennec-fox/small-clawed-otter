@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import io.mustelidae.smallclawedotter.api.domain.board.Attachment
 import io.mustelidae.smallclawedotter.api.domain.board.Paragraph
 import io.mustelidae.smallclawedotter.api.domain.board.Writing
+import io.swagger.annotations.ApiModel
 import org.hibernate.validator.constraints.URL
 import java.time.LocalDateTime
 
 class BoardResources {
 
     class Request {
+        @ApiModel("Board.Request.TextArticle")
         data class TextArticle(
             val title: String,
             val type: Paragraph.Type,
@@ -26,6 +28,7 @@ class BoardResources {
             )
         }
 
+        @ApiModel("Board.Request.ImageArticle")
         data class ImageArticle(
             val title: String,
             val images: List<Image>,
@@ -33,6 +36,8 @@ class BoardResources {
             val startTerm: LocalDateTime? = null,
             val endTerm: LocalDateTime? = null
         ) {
+
+            @ApiModel("Board.Request.ImageArticle.Image")
             data class Image(
                 val order: Int,
                 @get:URL
@@ -44,6 +49,8 @@ class BoardResources {
     }
 
     class Modify {
+
+        @ApiModel("Board.Modify.TextArticle")
         data class TextArticle(
             val title: String,
             val text: String,
@@ -57,6 +64,7 @@ class BoardResources {
             }
         }
 
+        @ApiModel("Board.Modify.ImageArticle")
         data class ImageArticle(
             val title: String,
             val images: List<Image>,
@@ -81,6 +89,7 @@ class BoardResources {
 
     class Reply {
 
+        @ApiModel("Board.Reply.Article")
         data class Article(
             val id: Long,
             val createdAt: LocalDateTime,
@@ -115,6 +124,7 @@ class BoardResources {
             }
         }
 
+        @ApiModel("Board.Reply.ArticleWithParagraph")
         data class ArticleWithParagraph(
             val id: Long,
             val createdAt: LocalDateTime,
@@ -165,6 +175,7 @@ class BoardResources {
                 }
             }
 
+            @ApiModel("Board.Reply.ArticleWithParagraph.Paragraph")
             data class ArticleParagraph(
                 val id: Long,
                 val type: Paragraph.Type,
@@ -181,6 +192,7 @@ class BoardResources {
                 }
             }
 
+            @ApiModel("Board.Reply.ArticleWithParagraph.Attach")
             data class Attach(
                 val id: Long,
                 val type: Attachment.Type,
