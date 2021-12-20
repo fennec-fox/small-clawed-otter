@@ -54,16 +54,19 @@ class SwaggerConfiguration {
         .build()
 }
 
-@ApiModel(description = "공통 에러 포멧")
+@ApiModel(description = "Common Error format")
 data class GlobalErrorFormat(
     val timestamp: String,
-
     @ApiModelProperty(value = "Http Status Code")
     val status: Int,
     @ApiModelProperty(value = "error code")
     val code: String,
-    @ApiModelProperty(value = "사용자 화면 노출용 설명")
+    @ApiModelProperty(value = "text displayed to the user")
     val description: String,
     @ApiModelProperty(value = "exception message")
-    val message: String
+    val message: String,
+    @ApiModelProperty(value = "exception name")
+    val type: String,
+    @ApiModelProperty(value = "reference error code")
+    val refCode: String
 )
