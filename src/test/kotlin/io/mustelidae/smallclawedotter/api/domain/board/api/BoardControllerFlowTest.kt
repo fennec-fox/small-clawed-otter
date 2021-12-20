@@ -18,6 +18,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import java.time.LocalDateTime
 
+@Suppress("HttpUrlsUsage")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BoardControllerFlowTest : IntegrationSupport() {

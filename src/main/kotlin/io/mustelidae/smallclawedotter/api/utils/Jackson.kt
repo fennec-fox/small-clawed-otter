@@ -1,11 +1,6 @@
 package io.mustelidae.smallclawedotter.api.utils
 
 import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.JsonParser
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.fasterxml.jackson.core.TreeNode
-import com.fasterxml.jackson.databind.DeserializationContext
-import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -16,7 +11,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder
-import java.io.IOException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -45,15 +39,6 @@ private class CustomDateSerializer : StdSerializer<Date>(Date::class.java) {
                 ).format(DateTimeFormatter.ISO_DATE_TIME)
             )
         }
-    }
-}
-
-class KeepAsJsonDeserializer : JsonDeserializer<String>() {
-
-    @Throws(IOException::class, JsonProcessingException::class)
-    override fun deserialize(jp: JsonParser, ctxt: DeserializationContext): String {
-        val tree: TreeNode = jp.codec.readTree(jp)
-        return tree.toString()
     }
 }
 

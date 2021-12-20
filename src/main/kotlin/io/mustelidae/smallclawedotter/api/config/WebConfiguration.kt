@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter
 
 @Configuration
 @ControllerAdvice
-class WebConfiguration() : WebMvcConfigurationSupport() {
+class WebConfiguration : WebMvcConfigurationSupport() {
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         val objectMapper = Jackson.getMapper()
