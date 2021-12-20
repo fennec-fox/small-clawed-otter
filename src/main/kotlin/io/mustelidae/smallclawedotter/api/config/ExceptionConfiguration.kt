@@ -182,10 +182,10 @@ class ExceptionConfiguration(
 
         errorAttributes.apply {
             this["message"] = error.message
-            this["status"] = "fail"
             this["code"] = error.code
             this["causeBy"] = error.causeBy
             this["type"] = e.javaClass.simpleName
+            this["refCode"] = error.refCode
         }
 
         return errorAttributes
