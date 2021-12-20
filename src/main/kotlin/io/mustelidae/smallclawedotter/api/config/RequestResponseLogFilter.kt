@@ -153,6 +153,7 @@ private object PrivacyLogFilter {
     private const val intValuePattern = "\"%s\"\\s*:\\s*([0-9]+)"
     private val logPatterns = listOf(
         stringValuePattern.format("name").toRegex(), // 이름
+        stringValuePattern.format("address").toRegex(), // 주소
         stringValuePattern.format("phone").toRegex(), // 전화번호
         stringValuePattern.format("plateNumber").toRegex(), // 자동차 번호
         intValuePattern.format("userId").toRegex(), // 유저아이디
