@@ -22,6 +22,8 @@ repositories {
     mavenCentral()
 }
 
+ext["log4j2.version"] = "2.17.0"
+
 dependencies {
     implementation(kotlin("stdlib"))
 
@@ -34,7 +36,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.mongodb:bson:4.3.3")
+    implementation("org.mongodb:bson:4.4.0")
     runtimeOnly("mysql:mysql-connector-java")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -52,7 +54,7 @@ dependencies {
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("io.kotest:kotest-runner-junit5:4.6.3")
+    testImplementation("io.kotest:kotest-runner-junit5:5.0.2")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
 
 
