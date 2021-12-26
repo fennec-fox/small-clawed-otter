@@ -54,7 +54,7 @@ dependencies {
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-    testImplementation("io.kotest:kotest-runner-junit5:5.0.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:4.6.3")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
 
 
