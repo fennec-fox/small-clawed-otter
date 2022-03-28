@@ -5,6 +5,7 @@ package io.mustelidae.smallclawedotter.api.config
 import io.mustelidae.smallclawedotter.api.common.Error
 import io.mustelidae.smallclawedotter.api.common.ErrorCode
 import io.mustelidae.smallclawedotter.api.common.ErrorSource
+import io.mustelidae.smallclawedotter.api.utils.Jackson
 import org.slf4j.LoggerFactory
 import org.springframework.boot.web.error.ErrorAttributeOptions
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
@@ -37,7 +38,7 @@ class ExceptionConfiguration(
     @ExceptionHandler(value = [RuntimeException::class])
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): Map<String, Any> {
+    fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("Unexpected error", e)
         return errorForm(request, e, Error(ErrorCode.S000, "Oops, something went wrong."))
     }
@@ -45,7 +46,7 @@ class ExceptionConfiguration(
     @ExceptionHandler(value = [InvalidDataAccessApiUsageException::class])
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleInvalidDataAccessApiUsageException(e: InvalidDataAccessApiUsageException, request: HttpServletRequest): Map<String, Any> {
+    fun handleInvalidDataAccessApiUsageException(e: InvalidDataAccessApiUsageException, request: HttpServletRequest): GlobalErrorFormat {
         return errorForm(request, e, Error(ErrorCode.SD01, e.message!!))
     }
 
@@ -55,7 +56,7 @@ class ExceptionConfiguration(
     @ExceptionHandler(value = [IllegalStateException::class])
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleIllegalStateException(e: IllegalStateException, request: HttpServletRequest): Map<String, Any> {
+    fun handleIllegalStateException(e: IllegalStateException, request: HttpServletRequest): GlobalErrorFormat {
         return errorForm(request, e, Error(ErrorCode.P000, "Oops, something went wrong."))
     }
 
@@ -65,7 +66,7 @@ class ExceptionConfiguration(
     @ExceptionHandler(value = [DevelopMistakeException::class])
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleDevelopMistakeException(e: DevelopMistakeException, request: HttpServletRequest): Map<String, Any> {
+    fun handleDevelopMistakeException(e: DevelopMistakeException, request: HttpServletRequest): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -75,7 +76,7 @@ class ExceptionConfiguration(
     @ExceptionHandler(value = [IllegalArgumentException::class])
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): Map<String, Any> {
+    fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("[T] wrong input.", e)
         return errorForm(request, e, Error(ErrorCode.HI01, "Invalid input"))
     }
@@ -86,7 +87,7 @@ class ExceptionConfiguration(
     fun handleMethodArgumentNotValidException(
         e: MethodArgumentNotValidException,
         request: HttpServletRequest
-    ): MutableMap<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(
             request,
             e,
@@ -105,7 +106,7 @@ class ExceptionConfiguration(
     fun handleCommunicationException(
         e: CommunicationException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -118,7 +119,7 @@ class ExceptionConfiguration(
     fun handleHumanException(
         e: HumanException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -131,7 +132,7 @@ class ExceptionConfiguration(
     fun policyException(
         e: PolicyException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -144,7 +145,7 @@ class ExceptionConfiguration(
     fun unAuthorizedException(
         e: UnAuthorizedException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -157,7 +158,7 @@ class ExceptionConfiguration(
     fun dataNotFindException(
         e: DataNotFindException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
@@ -167,11 +168,11 @@ class ExceptionConfiguration(
     fun preconditionFailException(
         e: PreconditionFailException,
         request: HttpServletRequest
-    ): Map<String, Any> {
+    ): GlobalErrorFormat {
         return errorForm(request, e, e.error)
     }
 
-    private fun errorForm(request: HttpServletRequest, e: Exception, error: ErrorSource): MutableMap<String, Any> {
+    private fun errorForm(request: HttpServletRequest, e: Exception, error: ErrorSource): GlobalErrorFormat {
 
         val errorAttributeOptions = if (env.activeProfiles.contains("prod").not())
             ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)
@@ -188,7 +189,7 @@ class ExceptionConfiguration(
             this["refCode"] = error.refCode
         }
 
-        return errorAttributes
+        return Jackson.getMapper().convertValue(errorAttributes, GlobalErrorFormat::class.java)
     }
 
     @Suppress(

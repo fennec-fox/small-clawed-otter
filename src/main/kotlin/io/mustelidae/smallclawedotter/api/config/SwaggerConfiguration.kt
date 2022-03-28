@@ -1,8 +1,6 @@
 package io.mustelidae.smallclawedotter.api.config
 
 import com.fasterxml.classmate.TypeResolver
-import io.swagger.annotations.ApiModel
-import io.swagger.annotations.ApiModelProperty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -53,20 +51,3 @@ class SwaggerConfiguration {
         .supportedSubmitMethods(UiConfiguration.Constants.NO_SUBMIT_METHODS)
         .build()
 }
-
-@ApiModel(description = "Common Error format")
-data class GlobalErrorFormat(
-    val timestamp: String,
-    @ApiModelProperty(value = "Http Status Code")
-    val status: Int,
-    @ApiModelProperty(value = "error code")
-    val code: String,
-    @ApiModelProperty(value = "text displayed to the user")
-    val description: String,
-    @ApiModelProperty(value = "exception message")
-    val message: String,
-    @ApiModelProperty(value = "exception name")
-    val type: String,
-    @ApiModelProperty(value = "reference error code")
-    val refCode: String
-)
